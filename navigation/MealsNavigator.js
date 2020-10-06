@@ -4,8 +4,7 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import { DrawerActions } from "@react-navigation/native";
-
-import { Platform } from "react-native";
+import { LogBox } from "react-native";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
@@ -15,6 +14,8 @@ import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import { MEALS } from "../data/dummy-data";
+import FiltersScreen from "../screens/FiltersScreen";
+import { toggleFavorite } from "../store/actions/meals";
 
 const Stack = createStackNavigator();
 
@@ -60,9 +61,7 @@ const StackNavigator = () => {
               <Item
                 title="Favorite"
                 iconName="ios-star"
-                onPress={() => {
-                  console.log("marked favorite");
-                }}
+                onPress={route.params.toggleFev}
               ></Item>
             </HeaderButtons>
           ),
@@ -124,5 +123,42 @@ const FavoritesNav = () => {
     </FavoritesStack.Navigator>
   );
 };
+{
+  /* Favorites Screen */
+}
+const FilterStack = createStackNavigator();
 
-export { StackNavigator, FavoritesNav };
+const FilterNav = () => {
+  return (
+    <FilterStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: Colors.primaryColor,
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontSize: 17,
+        },
+      }}
+    >
+      <FilterStack.Screen
+        name="Filter"
+        component={FiltersScreen}
+        options={({ route, navigation }) => ({
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                title="Save"
+                iconName="ios-save"
+                onPress={() => navigation.getParams("save")}
+              ></Item>
+            </HeaderButtons>
+          ),
+          headerTitleAlign: "center",
+        })}
+      />
+    </FilterStack.Navigator>
+  );
+};
+
+export { StackNavigator, FavoritesNav, FilterNav };

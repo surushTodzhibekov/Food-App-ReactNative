@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import { MEALS } from "../data/dummy-data";
 import Context from "../components/Context";
+import { toggleFavorite } from "../store/actions/meals";
 
 const ListItem = ({ children }) => {
   return (
@@ -14,7 +16,20 @@ const ListItem = ({ children }) => {
 
 function MealDetailScreen({ navigation, route }) {
   const { mealId, mealTitle } = route.params;
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const availableMeal = useSelector((state) => state.meals.meals);
+  const selectedMeal = availableMeal.find((meal) => meal.id === mealId);
+
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(mealId));
+  }, [dispatch, mealId]);
+
+  useEffect(() => {
+    // navigation.setParams({mealTitle: selectedMeal.title})
+    navigation.setParams({ toggleFev: toggleFavoriteHandler });
+  }, [toggleFavoriteHandler]);
+
   return (
     <ScrollView>
       <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Switch, Text, Platform } from "react-native";
 import Colors from "../constants/Colors";
 
@@ -16,11 +16,25 @@ const FilterSwitch = ({ title, value, onValueChange }) => {
   );
 };
 
-function FiltersScreen(props) {
+function FiltersScreen({ route, navigation }) {
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isLactous, setIsLactous] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
   const [isVegatarian, setIsVegatarian] = useState(false);
+
+  const SaveFilters = useCallback(() => {
+    const appliedFilters = {
+      glutenFree: isGlutenFree,
+      lactous: isLactous,
+      vegan: isVegan,
+      isVegatarian: isVegatarian,
+    };
+    console.log(appliedFilters);
+  }, [isGlutenFree, isLactous, isVegan, isVegatarian]);
+
+  useEffect(() => {
+    navigation.setParams({ save: SaveFilters });
+  }, [SaveFilters]);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Available Filters / Restrictions</Text>
