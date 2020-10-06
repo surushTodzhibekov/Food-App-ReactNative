@@ -17,6 +17,9 @@ const ListItem = ({ children }) => {
 function MealDetailScreen({ navigation, route }) {
   const { mealId, mealTitle } = route.params;
   const availableMeal = useSelector((state) => state.meals.meals);
+  const currentMealIsFavorite = useSelector((state) =>
+    state.meals.favoriteMeals.some((meal) => meal.id === mealId)
+  );
   const selectedMeal = availableMeal.find((meal) => meal.id === mealId);
 
   const dispatch = useDispatch();
@@ -29,6 +32,10 @@ function MealDetailScreen({ navigation, route }) {
     // navigation.setParams({mealTitle: selectedMeal.title})
     navigation.setParams({ toggleFev: toggleFavoriteHandler });
   }, [toggleFavoriteHandler]);
+
+  useEffect(() => {
+    navigation.setParams({ isFev: currentMealIsFavorite });
+  }, [currentMealIsFavorite]);
 
   return (
     <ScrollView>

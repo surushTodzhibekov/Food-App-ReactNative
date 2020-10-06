@@ -55,18 +55,21 @@ const StackNavigator = () => {
         component={CategoryMealsScreen}
       />
       <Stack.Screen
-        options={({ route }) => ({
-          headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title="Favorite"
-                iconName="ios-star"
-                onPress={route.params.toggleFev}
-              ></Item>
-            </HeaderButtons>
-          ),
-          title: route.params.mealTitle,
-        })}
+        options={({ route }) => {
+          const isFavorite = route.params.isFev;
+          return {
+            headerRight: () => (
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  title="Favorite"
+                  iconName={isFavorite ? "ios-star" : "ios-star-outline"}
+                  onPress={route.params.toggleFev}
+                ></Item>
+              </HeaderButtons>
+            ),
+            title: route.params.mealTitle,
+          };
+        }}
         name="MealDetail"
         component={MealDetailScreen}
       />
