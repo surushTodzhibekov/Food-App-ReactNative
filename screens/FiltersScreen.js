@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Switch, Text, Platform } from "react-native";
+import { useDispatch } from "react-redux";
+
 import Colors from "../constants/Colors";
+import { setFilters } from "../store/actions/meals";
 
 const FilterSwitch = ({ title, value, onValueChange }) => {
   return (
@@ -16,11 +19,13 @@ const FilterSwitch = ({ title, value, onValueChange }) => {
   );
 };
 
-function FiltersScreen({ route, navigation }) {
+function FiltersScreen({ navigation }) {
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isLactous, setIsLactous] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
   const [isVegatarian, setIsVegatarian] = useState(false);
+
+  const dispatch = useDispatch();
 
   const SaveFilters = useCallback(() => {
     const appliedFilters = {
@@ -29,8 +34,8 @@ function FiltersScreen({ route, navigation }) {
       vegan: isVegan,
       isVegatarian: isVegatarian,
     };
-    console.log(appliedFilters);
-  }, [isGlutenFree, isLactous, isVegan, isVegatarian]);
+    dispatch(setFilters(appliedFilters));
+  }, [isGlutenFree, isLactous, isVegan, isVegatarian, dispatch]);
 
   useEffect(() => {
     navigation.setParams({ save: SaveFilters });

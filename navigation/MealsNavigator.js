@@ -147,13 +147,13 @@ const FilterNav = () => {
       <FilterStack.Screen
         name="Filter"
         component={FiltersScreen}
-        options={({ route, navigation }) => ({
+        options={({ route }) => ({
           headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
               <Item
                 title="Save"
                 iconName="ios-save"
-                onPress={() => navigation.getParams("save")}
+                onPress={route.params.save}
               ></Item>
             </HeaderButtons>
           ),
